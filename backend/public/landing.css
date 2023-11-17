@@ -1,0 +1,125 @@
+:root {
+    --primary-color: #122D5A;
+    --secondary-color: #B2B0BF;
+    --third-color: #2F4570;
+    --font-size-1: 52px;
+    --font-size-2: 42px;
+    --font-size-3: 22px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "inter", sans-serif;
+}
+
+.box-card-custom .card{
+    border-radius: 8px;
+}
+
+.box-card-custom .card:hover{
+    transform: translateY(-10px);
+    transition: ease-in-out 0.3s;
+
+}
+
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+a {
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff; /* Menambahkan warna teks putih agar sesuai */
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.navbar .navbar-brand {
+    font-weight: 900;
+    color: var(--primary-color);
+}
+
+.navbar .navbar-nav .nav-item .nav-link {
+    color: var(--secondary-color);
+}
+
+.navbar .navbar-nav .nav-item .nav-link.active,
+.navbar .navbar-nav .nav-item .nav-link:hover {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+header {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        width: 100%;
+    }
+}
+
+header .header-title {
+    font-size: var(--font-size-1);
+    font-weight: 900;
+}
+
+.hero-post .hero-post-img {
+    height: 400px;
+    object-fit: cover;
+}
+
+.hero-post .hero-post-title {
+    font-size: var(--font-size-2);
+    font-weight: 900;
+}
+
+.hero-post .avatar,
+.card-post .avatar {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+}
+
+.card-post {
+    transition: 0.3s;
+}
+
+.card-post:hover {
+    transform: translateY(-10px);
+}
+
+.card-post .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card-post .card-post-title {
+    font-size: var(--font-size-3);
+    font-weight: 700;
+}
+
+.card-post{
+    border: none;
+    border-radius: 8px;
+}
+
