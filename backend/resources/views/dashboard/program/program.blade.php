@@ -20,11 +20,11 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Program</h4>
 
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
                             <a href="{{ route('program.create') }}"
                                 class="btn btn-sm custom-btn-primary text-white hover-btn"><i
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row">
                     <div class="box-content">
                         <div class="col">
@@ -61,11 +61,12 @@
                                                                 <img src="{{ asset('storage/images/' . $item->gambar) }}"
                                                                     width="100" height="100" alt="gambar">
                                                             </div>
-                                                            <div class="col-md-5 ">
-                                                                <span style="font-weight: bold" class="align-middle">
-                                                                    {{ $item->nama_program }}</span> <br>
-                                                                <span class="align-middle">Kategori:
-                                                                    {{ $item->kategori_program }}</span>
+                                                            <div class="col-md-5 align-middle">
+                                                                <p style="font-weight: bold" class="">
+                                                                    {{ $item->nama_program }}</p> <br>
+                                                                <p class="">Kategori:
+                                                                    {{ $item->kategori_program }}</p>
+                                                                <p> Bidang: {{ $item->bidang }}</p>
                                                             </div>
                                                         </div>
                                                     </td>

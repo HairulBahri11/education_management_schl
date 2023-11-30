@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absensi;
-use App\Models\Jadwal;
-use App\Models\Manajemen_Kelas;
 use Carbon\Carbon;
+use App\Models\Jadwal;
+use App\Models\Absensi;
 use Illuminate\Http\Request;
+use App\Models\Manajemen_Kelas;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class absensiController extends Controller
@@ -16,7 +17,12 @@ class absensiController extends Controller
      */
     public function index()
     {
-        $data = Absensi::orderby('id', 'desc')->get();
+        if (Auth::user()->role == 'pengajar') {
+            $data = Absensi::where('pengajar_id', Auth::user()->id)->orderby('id', 'desc')->get();
+        } else {
+            $data = Absensi::orderby('id', 'desc')->get();
+        }
+
         return view('dashboard.absensi.absensi', compact('data'));
     }
 
@@ -27,6 +33,10 @@ class absensiController extends Controller
     {
         $jadwal = Jadwal::where('status', 'aktif')->orderby('id', 'desc')->get();
         $manajemen_kelas = Manajemen_Kelas::where('status', 'aktif')->get();
+        if (Auth::user()->role == 'pengajar') {
+            $jadwal = Jadwal::where('pengajar_id', Auth::user()->id)->where('status', 'aktif')->orderby('id', 'desc')->get();
+            $manajemen_kelas = Manajemen_Kelas::where('status', 'aktif')->get();
+        }
         return view('dashboard.absensi.absensi_create', compact('jadwal', 'manajemen_kelas'));
     }
 
@@ -65,6 +75,13 @@ class absensiController extends Controller
             'tgl_absen' => Carbon::createFromDate($request->tgl_absen)->format('Y-m-d'),
         ]);
         // field ini harus uniq
+        if (Auth::user()->role == 'pengajar') {
+            if ($data) {
+                return redirect('/absensi-pengajar')->with('success', 'Aktifasi Absen Berhasil');
+            } else {
+                return redirect('/absensi-pengajar')->with('error', 'Aktifasi Absen Gagal');
+            }
+        }
 
         if ($data) {
             return redirect('/absensi')->with('success', 'Aktifasi Absen Berhasil');

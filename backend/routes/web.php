@@ -16,6 +16,10 @@ use App\Http\Controllers\kelasController;
 use App\Http\Controllers\jadwalController;
 use App\Http\Controllers\absensiController;
 use App\Http\Controllers\absensiDetailController;
+use App\Http\Controllers\aspekpenilaianController;
+use App\Http\Controllers\detailAspekPenilaianController;
+use App\Http\Controllers\raportController;
+use App\Models\Raport;
 use GuzzleHttp\Middleware;
 
 /*
@@ -135,7 +139,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/{id}/show', [pendaftaranController::class, 'show'])->name('pendaftaran.show');
             Route::get('/{id}/show-siswa', [pendaftaranController::class, 'show_tambah'])->name('pendaftaran.show.tambah');
         });
-
+        Route::get('/export-excel', [pendaftaranController::class, 'export_excel'])->name('pendaftaran.export_excel');
         Route::group(['prefix' => 'siswa'], function () {
             Route::get('/', [siswaController::class, 'index'])->name('siswa.index');
             Route::get('/create', [siswaController::class, 'create'])->name('siswa.create');
@@ -215,6 +219,88 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('{id}/setsakit', [absensiDetailController::class, 'setSakit'])->name('absensi_detail.setSakit');
             Route::post('{id}/setalpa', [absensiDetailController::class, 'setAlpa'])->name('absensi_detail.setAlpa');
         });
+
+        Route::group(['prefix' => 'aspek_penilaian'], function () {
+            Route::get('/', [aspekpenilaianController::class, 'index'])->name('aspekpenilaian.index');
+            Route::get('/create', [aspekpenilaianController::class, 'create'])->name('aspekpenilaian.create');
+            Route::post('/store', [aspekpenilaianController::class, 'store'])->name('aspekpenilaian.store');
+            Route::get('/{id}', [aspekpenilaianController::class, 'edit'])->name('aspekpenilaian.edit');
+            Route::post('/{id}/update', [aspekpenilaianController::class, 'update'])->name('aspekpenilaian.update');
+            Route::delete('/{id}/destroy', [aspekpenilaianController::class, 'destroy'])->name('aspekpenilaian.destroy');
+        });
+
+        Route::group(['prefix' => 'aspek_penilaian_detail'], function () {
+            Route::get('/{id}', [detailAspekPenilaianController::class, 'index'])->name('aspekpenilaian_detail.index');
+            Route::get('/create', [detailAspekPenilaianController::class, 'create'])->name('aspekpenilaian_detail.create');
+            Route::get('/{id}/show', [detailAspekPenilaianController::class, 'show'])->name('aspekpenilaian_detail.show');
+            Route::post('/{id}/store', [detailAspekPenilaianController::class, 'store'])->name('aspekpenilaian_detail.store');
+            Route::get('/{id}', [detailAspekPenilaianController::class, 'edit'])->name('aspekpenilaian_detail.edit');
+            Route::post('/{id}/update', [detailAspekPenilaianController::class, 'update'])->name('aspekpenilaian_detail.update');
+            Route::delete('/{id}/destroy', [detailAspekPenilaianController::class, 'destroy'])->name('aspekpenilaian_detail.destroy');
+        });
+
+        // kelas raport
+        Route::group(['prefix' => 'raport-kelas'], function () {
+            Route::get('/', [kelasController::class, 'index_kelas_raport'])->name('raport_kelas.index');
+            Route::get('/{id}/detailkelas', [kelasController::class, 'detail_siswa_raport'])->name('raport_kelas.detail');
+        });
+
+        Route::group(['prefix' => 'raport'], function () {
+            Route::get('/{id_kelas}/{id_siswa}/form-penilaian', [raportController::class, 'create'])->name('raport.create');
+            Route::post('/store-penilaian', [raportController::class, 'store'])->name('raport.store');
+            Route::get('/{id_raport}/{id_kelas}/{id_siswa}/lihat-penilaian', [raportController::class, 'edit'])->name('raport.lihat');
+            Route::post('/{id_raport}/update-penilaian', [raportController::class, 'update'])->name('raport.update');
+            Route::post('/{id_raport}/cetak_raport', [raportController::class, 'cetak'])->name('raport.cetak');
+        });
+    });
+
+    Route::group(['middleware' => 'role:pengajar'], function () {
+        Route::get('dashboard-pengajar', [dashboardController::class, 'index'])->name('dashboard-pengajar');
+        Route::group(['prefix' => 'jadwal-petugas'], function () {
+            Route::get('/', [jadwalController::class, 'index'])->name('jadwalpetugas.index');
+        });
+        // route group absensi
+        Route::group(['prefix' => 'absensi-pengajar'], function () {
+            Route::get('/', [absensiController::class, 'index'])->name('absensi.index.pengajar');
+            Route::get('/create', [absensiController::class, 'create'])->name('absensi.create.pengajar');
+            Route::post('/store', [absensiController::class, 'store'])->name('absensi.store.pengajar');
+            Route::get('/{id}', [absensiController::class, 'edit'])->name('absensi.edit.pengajar');
+            Route::post('/{id}/update', [absensiController::class, 'update'])->name('absensi.update.pengajar');
+            Route::delete('/{id}/destroy', [absensiController::class, 'destroy'])->name('absensi.destroy.pengajar');
+            Route::post('/{id}/setnonactive', [absensiController::class, 'setnonactive'])->name('absensi.setnonactive.pengajar');
+            Route::get('/{id}/getjadwal', [jadwalController::class, 'getJadwal'])->name('absensi.getjadwal.pengajar');
+            Route::get('/{id}/getjadwalNew', [jadwalController::class, 'newdata'])->name('newgetdatajadwal.pengajar');
+            Route::get('/ajax', [absensiController::class, 'ajax'])->name('absensi.ajax.pengajar');
+        });
+        // route group absensi_detail
+        Route::group(['prefix' => 'absensi_detail-pengajar'], function () {
+            Route::get('/', [absensiDetailController::class, 'index'])->name('absensi_detail.index.pengajar');
+            Route::get('/create', [absensiDetailController::class, 'create'])->name('absensi_detail.create.pengajar');
+            Route::post('/{id}/store', [absensiDetailController::class, 'store'])->name('absensi_detail.store.pengajar');
+            Route::get('/{id}', [absensiDetailController::class, 'edit'])->name('absensi_detail.edit.pengajar');
+            Route::post('/{id}/update', [absensiDetailController::class, 'update'])->name('absensi_detail.update.pengajar');
+            Route::delete('/{id}/destroy', [absensiDetailController::class, 'destroy'])->name('absensi_detail.destroy.pengajar');
+            // Route::get('/{id}', [absensiDetailController::class, 'show'])->name('absensi_detail.lihat');
+            Route::post('/absendong', [absensiDetailController::class, 'absen'])->name('absen.siswa.pengajar');
+            Route::post('{id}/sethadir', [absensiDetailController::class, 'setHadir'])->name('absensi_detail.setHadir.pengajar');
+            Route::post('{id}/setizin', [absensiDetailController::class, 'setIzin'])->name('absensi_detail.setIzin.pengajar');
+            Route::post('{id}/setsakit', [absensiDetailController::class, 'setSakit'])->name('absensi_detail.setSakit.pengajar');
+            Route::post('{id}/setalpa', [absensiDetailController::class, 'setAlpa'])->name('absensi_detail.setAlpa.pengajar');
+        });
+
+        // kelas raport
+        Route::group(['prefix' => 'raport-kelas-pengajar'], function () {
+            Route::get('/', [kelasController::class, 'index_kelas_raport'])->name('raport_kelas.index.pengajar');
+            Route::get('/{id}/detailkelas', [kelasController::class, 'detail_siswa_raport'])->name('raport_kelas.detail.pengajar');
+        });
+
+        Route::group(['prefix' => 'raport-pengajar'], function () {
+            Route::get('/{id_kelas}/{id_siswa}/form-penilaian', [raportController::class, 'create'])->name('raport.create.pengajar');
+            Route::post('/store-penilaian', [raportController::class, 'store'])->name('raport.store.pengajar');
+            Route::get('/{id_raport}/{id_kelas}/{id_siswa}/lihat-penilaian', [raportController::class, 'edit'])->name('raport.lihat.pengajar');
+            Route::post('/{id_raport}/update-penilaian', [raportController::class, 'update'])->name('raport.update.pengajar');
+            Route::post('/{id_raport}/cetak_raport', [raportController::class, 'cetak'])->name('raport.cetak.pengajar');
+        });
     });
 
     Route::group(['middleware' => 'role:orangtua'], function () {
@@ -226,6 +312,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/siswa-daftar-program-baru', [landingController::class, 'daftarprogram'])->name('pendaftaran.siswa-daftar-program-baru');
             Route::get('/{id}/cetak_kartu', [landingController::class, 'cetakIdentitas'])->name('halaman_cetak_kartu');
             // Route::get('/{id}/cetak_kartu', [landingController::class, 'cetakKartu'])->name('cetak-kartu');
+            Route::get('/{id_siswa}/{id_kelas}/detail_kelas', [pendaftaranController::class, 'detail_kelas'])->name('pendaftaran.detail.kelas.ortu');
+            Route::get('/{id}/Cetak-Raport', [pendaftaranController::class, 'cetak_raport'])->name('pendaftaran.cetak-raport');
         });
     });
 });

@@ -11,7 +11,7 @@
             <div class="row mb-2">
                 <div class="container">
                     <div class="col-md-8 ">
-                        <h4 class="fw-bold"> Dashboard</h4>
+                        <h4 class="fw-bold" data-aos="fade-up" data-aos-delay="200"> Dashboard</h4>
                     </div>
                 </div>
             </div>
@@ -19,48 +19,112 @@
                 {{-- buat tingginya sesuai ukuran data --}}
                 <div class="col-md-8">
 
-                    <div class="box-card-custom bg-white p-3" style="border-radius: 10px">
+                    <div class="box-card-custom bg-white p-3" style="border-radius: 10px" data-aos="fade-up"
+                        data-aos-delay="300">
                         <div class="row">
-                            <div class="col">
-                                <div class="card border-top-0 border-start-0 border-bottom-0">
-                                    <div class="card-body">
-                                        <p class="card-title custom-card-title text-secondary">
-                                            Total Pendapatan
-                                        </p>
-                                        <h5 class="card-text">Rp.
-                                            {{ number_format($kirim['total_harga_bayar'], 0, ',', '.') }}</h5>
+                            @if (Auth::user()->role == 'admin')
+                                <div class="col">
+                                    <div class="card border-top-0 border-start-0 border-bottom-0">
+                                        <div class="card-body">
+                                            <p class="card-title custom-card-title text-secondary">
+                                                Total Pendapatan
+                                            </p>
+                                            <h5 class="card-text">Rp.
+                                                {{ number_format($kirim['total_harga_bayar'], 0, ',', '.') }}</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="card border-top-0 border-start-0 border-bottom-0">
-                                    <div class="card-body">
-                                        <p class="card-title custom-card-title text-secondary">
-                                            Total Pengajar
-                                        </p>
-                                        <h5 class="card-text">{{ $kirim['frekuensi_pengajar'] }} orang</h5>
+                                <div class="col">
+                                    <div class="card border-top-0 border-start-0 border-bottom-0">
+                                        <div class="card-body">
+                                            <p class="card-title custom-card-title text-secondary">
+                                                Total Pengajar
+                                            </p>
+                                            <h5 class="card-text">{{ $kirim['frekuensi_pengajar'] }} orang</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="card border-0 custom-card">
-                                    <div class="card-body">
-                                        <p class="card-title custom-card-title text-secondary">
-                                            Total Pelajar
-                                        </p>
-                                        <h5 class="card-text">{{ $kirim['frekuensi_siswa'] }} orang</h5>
+                                <div class="col">
+                                    <div class="card border-0 custom-card">
+                                        <div class="card-body">
+                                            <p class="card-title custom-card-title text-secondary">
+                                                Total Pelajar
+                                            </p>
+                                            <h5 class="card-text">{{ $kirim['frekuensi_siswa'] }} orang</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="col">
+                                    <div class="card border-top-0 border-start-0 border-bottom-0">
+                                        <div class="card-body">
+                                            <p class="card-title custom-card-title text-secondary">
+                                                Total Kelas
+                                            </p>
+                                            <h5 class="card-text">
+                                                {{ $kirim['frekuensi_kelas_pengajar'] }} kelas</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card border-top-0 border-start-0 border-bottom-0 border-end-0">
+                                        <div class="card-body">
+                                            <p class="card-title custom-card-title text-secondary">
+                                                Total Pelajar
+                                            </p>
+                                            <h5 class="card-text">{{ $kirim['frekuensi_siswa'] }} orang</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+
 
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="container mt-4">
-                            <div class="box-card-custom flex-fill  bg-white ">
+                            <div class="box-card-custom flex-fill  bg-white " data-aos="fade-up" data-aos-delay="500">
                                 <div class="col-md-12">
                                     <div class="card-body  align-items-center justify-content-center">
                                         <span> {!! $kirim['chart']->container() !!}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="container ">
+                            <div class="box-card-custom flex-fill  bg-white " data-aos="fade-up" data-aos-delay="200">
+                                <div class="col-md-12">
+                                    <div class="card-body  align-items-center justify-content-center">
+                                        <p class="card-title ms-3 fw-bold">Daftar Jadwal</p>
+                                    </div>
+                                    <div class="table-responsive p-3">
+                                        <table class="table table-borderless table-hover" id="example">
+                                            <thead class="text-secondary opacity-7  text-white bg-secondary mt-2">
+                                                <tr>
+                                                    <th></th>
+                                                    <th scope="col"> Hari</th>
+                                                    <th scope="col">Waktu</th>
+                                                    <th scope="col ">Kelas</th>
+                                                    <th scope="col ">Program</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kirim['jadwal_pengajar'] as $item)
+                                                    <tr>
+                                                        <td>{{ $item->kelas->pengajar->nama }}</td>
+                                                        <td>{{ $item->hari }}</td>
+                                                        <td>{{ $item->jam_mulai }} -
+                                                            {{ $item->jam_selesai }}</td>
+                                                        <td>{{ $item->kelas->nama_kelas }}</td>
+                                                        <td>{{ $item->program->nama_program }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                 </div>
@@ -71,7 +135,34 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="box-card-custom bg-white p-2">
+                    <div class="card border-0 box-content mb-3 " data-aos="fade-up" data-aos-delay="500">
+
+                        <div class="card-body ">
+
+                            <div class="prfil d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('storage/images/' . Auth::user()->foto) }}"
+                                    class="img-fluid rounded-circle d-flex justify-content-center align-items-center"
+                                    style="width: 100px; height: 100px; object-fit: cover; object-position: center  }}"
+                                    alt="">
+                            </div>
+                            <input type="text" value="{{ Auth::user()->id }}" name="siswa_id" hidden>
+                            <p class="card-text text-secondary text-center fw-bold mt-2">
+                                {{ Auth::user()->nama }}</p>
+                            </p>
+                            <p class=" text-secondary text-center mt-2 fs-9">
+                                {{ Auth::user()->email }}</p>
+                            </p>
+                            @if (Auth::user()->role == 'admin')
+                                <p class=" text-center p-2  custom-btn-primary fw-bold text-white">
+                                    Admin</p>
+                            @else
+                                <p class=" text-center p-2  custom-btn-edit fw-bold text-white">
+                                    Pengajar</p>
+                            @endif
+
+                        </div>
+                    </div>
+                    <div class="box-card-custom bg-white p-2" data-aos="fade-up" data-aos-delay="800">
                         <b>
                             <p class="card-title ms-3">Pendaftaran</p>
                         </b>

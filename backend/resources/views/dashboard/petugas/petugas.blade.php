@@ -20,11 +20,11 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Petugas</h4>
 
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
                             <a href="{{ route('petugas.create') }}"
                                 class="btn btn-sm custom-btn-primary text-white hover-btn"><i
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row">
                     <div class="box-content">
                         <div class="col">

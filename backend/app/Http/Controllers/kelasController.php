@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Kelas;
-use App\Models\Manajemen_Kelas;
-use App\Models\Pendaftaran;
+use App\Models\Siswa;
+use App\Models\Raport;
 use App\Models\Petugas;
 use App\Models\Program;
-use App\Models\Siswa;
-use App\Models\User;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Manajemen_Kelas;
 
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class kelasController extends Controller
 {
@@ -23,9 +25,23 @@ class kelasController extends Controller
     {
         // $data_kelas = Kelas::orderBy('id', 'desc')->get();
         // data kelas order by status aktif
+
         $data_kelas = Kelas::orderBy('status', 'asc')->get();
         $data_program = Program::all();
+        if (Auth::user()->role == 'pengajar') {
+        }
         return view('dashboard.kelas.kelas', compact('data_kelas', 'data_program'));
+    }
+
+    public function index_kelas_raport()
+    {
+        $data_kelas = Kelas::where('status', 'aktif')->orderBy('status', 'asc')->get();
+        $data_program = Program::all();
+        if (Auth::user()->role == 'pengajar') {
+            $data_kelas = Kelas::where('status', 'aktif')->where('pengajar_id', Auth::user()->id)->orderBy('status', 'asc')->get();
+            $data_program = Program::all();
+        }
+        return view('dashboard.raport.kelas', compact('data_kelas', 'data_program'));
     }
 
     /**
@@ -59,9 +75,19 @@ class kelasController extends Controller
             ->orWhereIn('id', $excludedPrograms)
             ->get();
 
+        $data_pengajar = User::where('role', 'pengajar')->where('active', '1')->get();
+
         // Pass the available programs to the view
         // return view('dashboard.kelas.kelas_create', compact('data_kelas', 'availablePrograms', 'nama_kelas'));
-        return view('dashboard.kelas.kelas_create', compact('data_kelas', 'data_program', 'nama_kelas'));
+        return view(
+            'dashboard.kelas.kelas_create',
+            compact(
+                'data_kelas',
+                'data_program',
+                'nama_kelas',
+                'data_pengajar'
+            )
+        );
     }
 
     /**
@@ -86,6 +112,7 @@ class kelasController extends Controller
         $data  = Kelas::create([
             'nama_kelas' => $request->nama_kelas,
             'program_id' => $request->program_id,
+            'pengajar_id' => $request->pengajar_id,
             'status' => 'aktif'
         ]);
 
@@ -141,6 +168,25 @@ class kelasController extends Controller
 
         // dd($data_siswa);
         return view('dashboard.kelas.kelas_detail', compact('data', 'data_siswa'));
+    }
+
+    public function detail_siswa_raport(string $id)
+    {
+        $data = Kelas::find($id);
+        $data_siswa = Manajemen_Kelas::where('kelas_id', $data->id)->get();
+
+        // cek di raport apakah ada data siswa yang sudah diberi nilai
+        $data_anak = $data_siswa->pluck('siswa_id')->toArray();
+        // $data_raport = Raport::whereIn('id', $data_anak)->get();
+        // if ($data_raport != null) {
+        //     $hidden_raport = 'hidden';
+        // } else {
+        //     $hidden_raport = '';
+        // }
+
+
+        // dd($data_siswa);
+        return view('dashboard.raport.kelas_detail', compact('data', 'data_siswa',));
     }
 
     /**

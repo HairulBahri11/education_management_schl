@@ -29,7 +29,6 @@ class pendaftaranBulananChart
             $dataPendaftaran[] = Pendaftaran::whereYear('created_at', $tahun)->whereMonth('created_at', $i)->count();
             $namaBulan = date('F', mktime(0, 0, 0, $i, 1, $tahun));
             $labelsBulan[] = $namaBulan;
-
         }
 
         return $this->chart->barChart()

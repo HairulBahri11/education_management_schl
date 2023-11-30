@@ -6,10 +6,10 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Tambah Program</h4>
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <form action="{{ route('program.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row mb-3">
                     <div class="box-content">
                         <div class="col bg-white">
@@ -27,9 +27,20 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Bidang
+                                                Program</label>
+                                            <select name="bidang" class="form-control" id="bidang" required>
+                                                <option class="form-control">--Pilih Bidang--</option>
+                                                <option value="Robotik" class="form-control">Robotik</option>
+                                                <option value="BahasaInggris" class="form-control">Bahasa Inggris
+                                                </option>
+                                                <option value="BahasaMandarin" class="form-control">Bahasa Mandarin</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="exampleFormControlInput1" class="form-label">Program</label>
                                             <input type="text" name="nama_program" class="form-control"
-                                                id="exampleFormControlInput1" placeholder="Program" required>
+                                                id="exampleFormControlInput1" placeholder="Judul Program" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="exampleFormControlInput1" class="form-label">Kategori
@@ -132,7 +143,7 @@
                 $('#jp_for_premium').hide();
                 $('#harga').val('0');
                 $('#jeniskelas-value').val('15');
-                $('#harnyanya').hide();
+                $('#harganya').hide();
             } else {
                 getJenisKelas();
                 $('#jp_for_trial').hide();

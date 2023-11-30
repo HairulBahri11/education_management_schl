@@ -28,21 +28,28 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Absensi Kelas
 
                         </h4>
                     </div>
-                    <div class="col-md-5 ms-auto">
+                    <div class="col-md-5 ms-auto" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
-                            <a href="{{ route('absensi.create') }}"
-                                class="btn btn-sm custom-btn-primary text-white hover-btn"><i
-                                    class="fa-solid fa-circle-plus text-white"></i>Tambah Absensi</a>
+                            @if (Auth::user()->role == 'admin')
+                                <a href="{{ route('absensi.create') }}"
+                                    class="btn btn-sm custom-btn-primary text-white hover-btn"><i
+                                        class="fa-solid fa-circle-plus text-white"></i>Tambah Absensi</a>
+                            @else
+                                <a href="{{ route('absensi.create.pengajar') }}"
+                                    class="btn btn-sm custom-btn-primary text-white hover-btn"><i
+                                        class="fa-solid fa-circle-plus text-white"></i>Tambah Absensi</a>
+                            @endif
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row">
                     <div class="box-content">
                         <div class="col">
@@ -111,19 +118,37 @@
                                                             }
 
                                                         @endphp
-                                                        <form action="{{ route('absensi_detail.store', $item->id) }}"
-                                                            method="POST" style="display: inline-block;">
-                                                            @method('POST')
-                                                            @csrf
-                                                            <button type="submit"
-                                                                class="btn btn-sm custom-btn-green hover-btn {{ $create_detail }}"
-                                                                title="Kelola Absen" data-id="{{ $item->id }}"><i
-                                                                    class="fa-solid fa-pencil text-white fs-10"></i></button>
-                                                        </form>
-                                                        <a href="{{ route('absensi_detail.edit', $item->id) }}"
-                                                            class="btn btn-sm custom-btn-edit hover-btn {{ $show_detail }}"
-                                                            title="Edit"><i
-                                                                class="fa-solid fa-pen-to-square text-white"></i></a>.
+                                                        @if (Auth::user()->role == 'admin')
+                                                            <form action="{{ route('absensi_detail.store', $item->id) }}"
+                                                                method="POST" style="display: inline-block;">
+                                                                @method('POST')
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-sm custom-btn-green hover-btn {{ $create_detail }}"
+                                                                    title="Kelola Absen" data-id="{{ $item->id }}"><i
+                                                                        class="fa-solid fa-pencil text-white fs-10"></i></button>
+                                                            </form>
+                                                            <a href="{{ route('absensi_detail.edit', $item->id) }}"
+                                                                class="btn btn-sm custom-btn-edit hover-btn {{ $show_detail }}"
+                                                                title="Edit"><i
+                                                                    class="fa-solid fa-pen-to-square text-white"></i></a>
+                                                        @else
+                                                            <form
+                                                                action="{{ route('absensi_detail.store.pengajar', $item->id) }}"
+                                                                method="POST" style="display: inline-block;">
+                                                                @method('POST')
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="btn btn-sm custom-btn-green hover-btn {{ $create_detail }}"
+                                                                    title="Kelola Absen" data-id="{{ $item->id }}"><i
+                                                                        class="fa-solid fa-pencil text-white fs-10"></i></button>
+                                                            </form>
+                                                            <a href="{{ route('absensi_detail.edit.pengajar', $item->id) }}"
+                                                                class="btn btn-sm custom-btn-edit hover-btn {{ $show_detail }}"
+                                                                title="Edit"><i
+                                                                    class="fa-solid fa-pen-to-square text-white"></i></a>.
+                                                        @endif
+
                                                     </td>
                                                 </tr>
                                             @endforeach

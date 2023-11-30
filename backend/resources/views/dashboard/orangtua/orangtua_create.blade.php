@@ -5,10 +5,10 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h2 class="ms-4" style="font-weight: bold">Tambah orangtua</h2>
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <form action="{{ route('orangtua.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-3" data-aos="fade-left" data-aos-duration="1500">
                 <div class="box-content">
                     <div class="col bg-white">
                         <div class="p-5">
@@ -54,12 +54,12 @@
                                     <div class="mb-3">
                                         <label for="exampleFormControlTextarea1" class="form-label">Foto</label>
                                         <input type="file" name="foto" class="form-control"
-                                            id="exampleFormControlTextarea1" rows="3" >
+                                            id="exampleFormControlTextarea1" rows="3">
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleFormControlTextarea1" class="form-label">Alamat </label>
-                                        <textarea class="form-control" name="alamat" id="exampleFormControlTextarea1" rows="3" placeholder="Alamat lengkap"
-                                            required></textarea>
+                                        <textarea class="form-control" name="alamat" id="exampleFormControlTextarea1" rows="3"
+                                            placeholder="Alamat lengkap" required></textarea>
 
 
 
@@ -77,4 +77,3 @@
         </div>
 
     @endsection
-

@@ -5,11 +5,12 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h2 class="ms-4" style="font-weight: bold">Edit orangtua</h2>
                     </div>
-                    <div class="col-md-5 float-end">
-                        <form action="{{ route('orangtua.update', $data->id) }}" method="POST" enctype="multipart/form-data">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
+                        <form action="{{ route('orangtua.update', $data->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
                                 <button type="submit" class="btn custom-btn-primary hover-btn text-white"> <i
@@ -19,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-3" data-aos="fade-left" data-aos-duration="1500">
                 <div class="box-content">
                     <div class="col bg-white">
                         <div class="p-5">

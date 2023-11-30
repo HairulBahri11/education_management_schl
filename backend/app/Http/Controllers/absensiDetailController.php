@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Siswa;
 use App\Models\Absensi;
 use Illuminate\Http\Request;
 use App\Models\Absensi_Detail;
-use App\Models\Kelas;
 use App\Models\Manajemen_Kelas;
-use App\Models\Siswa;
+use Illuminate\Support\Facades\Auth;
 
 class absensiDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(String $id)
+    public function index()
     {
-        $data = Absensi_Detail::where('absensi_id', $id)->get();
     }
 
     /**
@@ -51,7 +51,11 @@ class absensiDetailController extends Controller
             $data->save();
         }
 
-        return redirect('/absensi')->with('success', 'Absensi Berhasil');
+        if (Auth::user()->role == 'pengajar') {
+            return redirect('/absensi-pengajar')->with('success', 'Absensi Berhasil Diaktifkan');
+        }
+
+        return redirect('/absensi')->with('success', 'Absensi Berhasil Diaktifkan');
     }
 
     /**
@@ -99,9 +103,18 @@ class absensiDetailController extends Controller
 
         if ($cekabsen == null) {
 
+            if (Auth::user()->role == 'pengajar') {
+
+                return redirect('/absensi_detail-pengajar/' . $request->absensi_id)->with('error', 'Maaf Anda Bukan Termasuk Siswa Pada Jadwal Ini');
+            }
+
             return redirect('/absensi_detail/' . $request->absensi_id)->with('error', 'Maaf Anda Bukan Termasuk Siswa Pada Jadwal Ini');
         } elseif ($cekabsen['kehadiran'] == 'Hadir') {
 
+            if (Auth::user()->role == 'pengajar') {
+
+                return redirect('/absensi_detail-pengajar/' . $request->absensi_id)->with('error', 'Maaf Anda Sudah Absen');
+            }
             return redirect('/absensi_detail/' . $request->absensi_id)->with('error', 'Maaf Anda Sudah Absen');
         } else {
             $data = Absensi_Detail::where('absensi_id', $request->absensi_id)->where('siswa_id', $siswa_id)->first();
@@ -114,6 +127,9 @@ class absensiDetailController extends Controller
             $data['manajemen_kelas_id'] = $manajemen_kelas_id;
             $data['tgl_absen'] = date('Y-m-d');
             $data->save();
+            if (Auth::user()->role == 'pengajar') {
+                return redirect('/absensi_detail-pengajar/' . $request->absensi_id)->with('success', 'Absensi Berhasil');
+            }
             return redirect('/absensi_detail/' . $request->absensi_id)->with('success', 'Absensi Berhasil');
         }
     }
@@ -133,6 +149,11 @@ class absensiDetailController extends Controller
         $data->tgl_absen = date('Y-m-d');
         $data->save();
 
+        if (Auth::user()->role == 'pengajar') {
+
+            return redirect('/absensi_detail-pengajar/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Hadir');
+        }
+
         return redirect('/absensi_detail/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Hadir');
     }
 
@@ -142,6 +163,12 @@ class absensiDetailController extends Controller
         $data->kehadiran = 'Alfa';
         $data->tgl_absen = date('Y-m-d');
         $data->save();
+
+        if (Auth::user()->role == 'pengajar') {
+
+            return redirect('/absensi_detail-pengajar/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Alpa');
+        }
+
 
         return redirect('/absensi_detail/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Alpa');
     }
@@ -153,6 +180,12 @@ class absensiDetailController extends Controller
         $data->tgl_absen = date('Y-m-d');
         $data->save();
 
+        if (Auth::user()->role == 'pengajar') {
+
+            return redirect('/absensi_detail-pengajar/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Izin');
+        }
+
+
         return redirect('/absensi_detail/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Izin');
     }
 
@@ -162,6 +195,11 @@ class absensiDetailController extends Controller
         $data->kehadiran = 'Sakit';
         $data->tgl_absen = date('Y-m-d');
         $data->save();
+        if (Auth::user()->role == 'pengajar') {
+
+            return redirect('/absensi_detail-pengajar/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Sakit');
+        }
+
         return redirect('/absensi_detail/' . $data->absensi_id)->with('success', 'Absensi Berhasil Diubah Menjadi Sakit');
     }
 }

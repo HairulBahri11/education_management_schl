@@ -29,7 +29,7 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Siswa</h4>
 
                     </div>
@@ -43,7 +43,7 @@
                     </div> --}}
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row">
                     <div class="box-content">
                         <div class="col">
@@ -56,7 +56,7 @@
                                                 <th class="text-xs text-secondary opacity-7">Kode Siswa</th>
                                                 <th class="text-xs text-secondary opacity-7">Nama Siswa
                                                 </th>
-                                                <th class="text-xs text-secondary opacity-7">Gender</th>
+                                                {{-- <th class="text-xs text-secondary opacity-7">Gender</th> --}}
                                                 {{-- <th class="text-xs text-secondary opacity-7">Program</th> --}}
                                                 <th class="text-xs text-secondary opacity-7">Action</th>
                                             </tr>
@@ -86,13 +86,13 @@
                                                         </div>
                                                     </td>
 
-                                                    <td class="text-xs text-secondary opacity-7 align-middle">
+                                                    {{-- <td class="text-xs text-secondary opacity-7 align-middle">
                                                         @if ($item->jenis_kelamin == 'L')
                                                             Laki Laki
                                                         @else
                                                             Perempuan
                                                         @endif
-                                                    </td>
+                                                    </td> --}}
 
                                                     {{-- <td class="text-xs text-secondary opacity-7 align-middle">
                                                     <span>

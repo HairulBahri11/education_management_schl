@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\pendaftaranBulananChart;
 use App\Models\User;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Program;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Charts\pendaftaranBulananChart;
+use App\Models\Jadwal;
 
 class dashboardController extends Controller
 {
@@ -51,6 +53,14 @@ class dashboardController extends Controller
             $frekuensi_menunggukonfirmasi = Pendaftaran::where('id_orangtua', Auth::user()->id)->where('status_pembayaran', 'Menunggu-Konfirmasi')->count();
         }
 
+        $jadwal_pengajar = Jadwal::all();
+        $jumlah_kelas_pengajar = Kelas::all()->count();
+
+        if (Auth::user()->role == 'pengajar') {
+            $jumlah_kelas_pengajar = Kelas::where('pengajar_id', Auth::user()->id)->count();
+            $jadwal_pengajar = Jadwal::where('pengajar_id', Auth::user()->id)->get();
+        }
+
         $kirim = [
             'chart' => $chart,
             'total_harga_bayar' => $total_harga_bayar,
@@ -60,7 +70,9 @@ class dashboardController extends Controller
             'frekuensi_pengajar' => $frekuensi_pengajar,
             'frekuensi_siswa' => $frekuensi_siswa,
             'premiumCount' => $premiumCount,
-            'trialCount' => $trialCount
+            'trialCount' => $trialCount,
+            'frekuensi_kelas_pengajar' => $jumlah_kelas_pengajar,
+            'jadwal_pengajar' => $jadwal_pengajar,
 
         ];
 

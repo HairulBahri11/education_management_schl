@@ -20,11 +20,11 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h2 class="ms-4" style="font-weight: bold">Ruangan</h2>
 
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
                             <a href="{{ route('ruangan.create') }}"
                                 class="btn btn-sm custom-btn-primary text-white hover-btn"><i
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" data-aos="fade-left" data-aos-duration="1500">
                 <div class="box-content">
                     <div class="col">
                         <div class="p-3">

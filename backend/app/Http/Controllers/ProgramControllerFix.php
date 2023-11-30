@@ -47,6 +47,7 @@ class ProgramControllerFix extends Controller
             'gambar' => 'required |mimes:jpeg,png,jpg,gif,svg|max:2048',
             'harga' => 'required',
             'durasi' => 'required',
+            'bidang' => 'required',
         ]);
         if ($validasi->fails()) {
             return $validasi->errors();
@@ -68,6 +69,7 @@ class ProgramControllerFix extends Controller
             'active' => 1,
             'jeniskelas_id' => $request->get('jeniskelas_id'),
             'durasi' => $request->get('durasi'),
+            'bidang' => $request->get('bidang'),
         ]);
 
         if ($data) {
@@ -107,6 +109,7 @@ class ProgramControllerFix extends Controller
         $data->active = 1;
         $data->jeniskelas_id = $request->get('jeniskelas_id');
         $data->durasi = $request->get('durasi');
+        $data->bidang = $request->get('bidang');
 
 
 

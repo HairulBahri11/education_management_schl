@@ -1,7 +1,7 @@
 :root {
-    --primary-color: #122D5A;
-    --secondary-color: #B2B0BF;
-    --third-color: #2F4570;
+    --primary-color: #122d5a;
+    --secondary-color: #b2b0bf;
+    --third-color: #2f4570;
     --font-size-1: 52px;
     --font-size-2: 42px;
     --font-size-3: 22px;
@@ -14,23 +14,19 @@
     font-family: "inter", sans-serif;
 }
 
-.box-card-custom .card{
+.box-card-custom .card {
     border-radius: 8px;
 }
 
-.box-card-custom .card:hover{
+.box-card-custom .card:hover {
     transform: translateY(-10px);
     transition: ease-in-out 0.3s;
-
 }
-
 
 img {
     max-width: 100%;
     height: auto;
 }
-
-
 
 a {
     text-decoration: none;
@@ -66,12 +62,12 @@ a {
 }
 
 header {
-    width: 40%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
     header {
         width: 100%;
     }
@@ -118,8 +114,7 @@ header .header-title {
     font-weight: 700;
 }
 
-.card-post{
+.card-post {
     border: none;
     border-radius: 8px;
 }
-

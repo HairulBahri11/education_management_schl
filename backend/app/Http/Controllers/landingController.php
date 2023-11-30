@@ -198,20 +198,5 @@ class landingController extends Controller
         $data = Siswa::where('id', $id)->first();
 
         return view('dashboard-orangtua.pendaftaran.cetak_kartu',  compact('data'));
-
-        // $pdf = PDF::loadView('dashboard-orangtua.pendaftaran.cetak_kartu', [ 'data' => $data]);
-        // $pdf->setPaper('a8', 'portrait');
-
-        // return $pdf->download('cetak_kartu.pdf');
-
     }
-
-    // function cetakKartu(string $id){
-    //     $data = Siswa::where('id', $id)->first();
-
-    //     $pdf = PDF::loadView('dashboard-orangtua.pendaftaran.cetak_kartu' , [ 'data' => $data]);
-    //     $pdf->setPaper('a8', 'portrait');
-    //     return $pdf->download('cetak_kartu.pdf');
-
-    // }
 }

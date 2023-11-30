@@ -20,4 +20,9 @@ class Manajemen_Kelas extends Model
     {
         return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class, 'program_id', 'id');
+    }
 }

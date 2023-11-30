@@ -9,6 +9,7 @@ use App\Models\Absensi;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class jadwalController extends Controller
@@ -21,6 +22,10 @@ class jadwalController extends Controller
         $data = Jadwal::whereHas('program', function ($query) {
             $query->where('kategori_program', 'Premium');
         })->get();
+
+        if (Auth::user()->role == 'pengajar') {
+            $data = Jadwal::where('pengajar_id', Auth::user()->id)->get();
+        }
 
 
         return view('dashboard.jadwal-premium.jadwal-premium', compact('data'));
@@ -63,7 +68,6 @@ class jadwalController extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'kelas_id' => 'required',
-            'pengajar_id' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'hari' => 'required',
@@ -95,13 +99,14 @@ class jadwalController extends Controller
 
         $kelas = Kelas::find($request->kelas_id);
         $program = $kelas->program_id;
+        $pengajar = $kelas->pengajar_id;
 
         $i = 0;
         foreach ($input_h as $h => $value) {
             $data = Jadwal::create([
                 'kelas_id' => $request->kelas_id,
                 'program_id' => $program,
-                'pengajar_id' => $request->pengajar_id,
+                'pengajar_id' => $pengajar,
                 'jam_mulai' => $jamMulai[$i],
                 'jam_selesai' => $jamSelesai[$i],
                 'hari' => $value,
@@ -131,7 +136,6 @@ class jadwalController extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'kelas_id' => 'required',
-            'pengajar_id' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
             'hari' => 'required',
@@ -159,13 +163,14 @@ class jadwalController extends Controller
 
         $kelas = Kelas::find($request->kelas_id);
         $program = $kelas->program_id;
+        $pengajar = $kelas->pengajar_id;
 
         $i = 0;
         foreach ($input_h as $h => $value) {
             $data = Jadwal::create([
                 'kelas_id' => $request->kelas_id,
                 'program_id' => $program,
-                'pengajar_id' => $request->pengajar_id,
+                'pengajar_id' => $pengajar,
                 'jam_mulai' => $jamMulai[$i],
                 'jam_selesai' => $jamSelesai[$i],
                 'hari' => $value,

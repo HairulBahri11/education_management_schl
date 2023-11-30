@@ -6,14 +6,14 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Tambah Jadwal
                             <span class="text-white"
                                 style="background-color: gold; padding: 5px; border-radius:8px; margin-left: 10px;font-size: 12px">
                                 <i>Premium</i></span>
                         </h4>
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <form action="{{ route('jadwalpremium.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
@@ -23,12 +23,12 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
 
                 <div class="row mb-3">
                     <div class="box-content">
                         <div class="col-md-12 p-4">
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Pengajar</label>
                                 <select name="pengajar_id" id="pengajar_id" class="form-control">
                                     <option value=""> --Pilih Pengajar--</option>
@@ -38,15 +38,15 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Kelas</label>
-                                <select name="kelas_id" id="kelas_id" class="form-control">
+                                <select name="kelas_id" id="kelas_id" class="form-control" onchange="getKelas()">
                                     <option value=""> --Pilih Kelas--</option>
                                     @foreach ($kelas as $kelas)
                                         <option class="form-control" value="{{ $kelas->id }}">
                                             {{ $kelas->nama_kelas }} -
-                                            {{ $kelas->program->nama_program }}
+                                            {{ $kelas->program->nama_program }} - {{ $kelas->pengajar->nama }}
                                         </option>
                                     @endforeach
                                 </select>

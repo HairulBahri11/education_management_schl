@@ -29,11 +29,11 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h2 style="font-weight: bold">{{ $data->nama_kelas }} </h2>
                         <h5>{{ $data->program->nama_program }}</h5>
                     </div>
-                    <div class="col-md-5 ms-auto">
+                    <div class="col-md-5 ms-auto" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
                             <a href="{{ route('kelas.hal_tambahsiswa', $data->id) }}"
                                 class="btn btn-sm custom-btn-primary text-white hover-btn"><i
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" data-aos="fade-left" data-aos-duration="1500">
                 <div class="box-content">
                     <div class="col">
                         <div class="p-3">

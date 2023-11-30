@@ -6,10 +6,10 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h2 class="ms-4" style="font-weight: bold">Tambah kelas</h2>
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <form action="{{ route('kelas.update-tambahsiswa', $data->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-3" data-aos="fade-left" data-aos-duration="1500">
                 <div class="col">
                     <div class="p-5">
                         <div class="row">

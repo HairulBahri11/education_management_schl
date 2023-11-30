@@ -6,10 +6,10 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Tambah kelas</h4>
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <form action="{{ route('kelas.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row mb-3">
                     <div class="col">
                         <div class="p-5">
@@ -31,6 +31,7 @@
                                             id="exampleFormControlInput1" placeholder="Ex. Joghardi"
                                             value="{{ $nama_kelas }}" required readonly>
                                     </div>
+
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Program </label>
                                         <select name="program_id" id="program" class="form-control"
@@ -40,6 +41,17 @@
                                                 <option class="form-control" value="{{ $program->id }}">
                                                     {{ $program->nama_program }} -
                                                     {{ $program->jeniskelas->nama_jenis_kelas }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Pengajar </label>
+                                        <select name="pengajar_id" id="pengajar_id" class="form-control">
+                                            <option value=""> --Pilih Pengajar--</option>
+                                            @foreach ($data_pengajar as $pengajar)
+                                                <option class="form-control" value="{{ $pengajar->id }}">
+                                                    {{ $pengajar->nama }}
                                                 </option>
                                             @endforeach
                                         </select>

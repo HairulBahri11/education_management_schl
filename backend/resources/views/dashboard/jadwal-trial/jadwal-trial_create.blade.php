@@ -6,14 +6,14 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Tambah Jadwal
                             <span class="text-white"
                                 style="background-color: gold; padding: 5px; border-radius:8px; margin-left: 10px;font-size: 12px">
                                 <i>Premium</i></span>
                         </h4>
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
                         <form action="{{ route('jadwaltrial.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
 
                 <div class="row mb-3">
                     <div class="box-content">

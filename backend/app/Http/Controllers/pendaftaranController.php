@@ -6,17 +6,21 @@ use App\Models\User;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Jadwal;
+use App\Models\Raport;
 use App\Models\Absensi;
-use App\Models\Absensi_Detail;
 use App\Models\Program;
 use App\Models\Pendaftaran;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+use App\Models\Detail_Raport;
+use App\Models\Absensi_Detail;
 use App\Models\Manajemen_Kelas;
+use App\Exports\PendaftaranExport;
 use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\alert;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Support\Facades\Validator;
 
@@ -421,6 +425,7 @@ class pendaftaranController extends Controller
 
 
         $data = Siswa::where('pendaftaran_id', $id)->first();
+        // dd($data);
         $orangtuaId = Auth::user()->id;
 
         $data_program = Pendaftaran::where('id_orangtua', $orangtuaId)->where('nama_anak', $data->nama_siswa)->get();
@@ -430,33 +435,24 @@ class pendaftaranController extends Controller
         // dd($data_others_program);
         $data_all_program = $data_others_program;
 
-        // dd($data);
-        // data kelas siswa diambil dari Manajemen_Kelas
         $data_kelas = Manajemen_Kelas::where('siswa_id', $data->id)->get();
-        // dd(count($data_kelas));
-        // dd($data_kelas[0]->kelas_id);
-        // for ($i = 0; $i < count($data_kelas); $i++) {
-        //     // $data_all_program = $data_all_program->merge(Program::where('id', $data_kelas[$i]->program_id)->get());
-        //     $jadwal[$i] = Jadwal::where('kelas_id', $data_kelas[$i]->kelas_id)->get();
-        // }
-
-        // $absen = Absen::where()
-
-        // cek absensi siswa
-        // for ($i = 0; $i < count($data_kelas); $i++) {
-        //     $absensi[$i] = Absensi_Detail::where('siswa_id', $data->id)->get();
-        // }
         $absensi = Absensi_Detail::where('siswa_id', $data->id)->get();
 
-        // dd($absensi);
+        // ambil data kelas dari siswa_id
+        $data_kelas = Manajemen_Kelas::where('siswa_id', $data->id)->get();
+        // dd($data_kelas);
 
 
-
-        // dd($jadwal);
-        // $jadwal = Jadwal::where('kelas_id', $data_kelas->kelas_id)->get();
-        // dd($jadwal);
-
-        return view('dashboard-orangtua.pendaftaran.ortu-detailpendaftaran', compact('data', 'data_program', 'data_all_program', 'absensi'));
+        return view(
+            'dashboard-orangtua.pendaftaran.ortu-detailpendaftaran',
+            compact(
+                'data',
+                'data_program',
+                'data_all_program',
+                'absensi',
+                'data_kelas'
+            )
+        );
     }
 
     // tambah data pendaftaran
@@ -613,5 +609,47 @@ class pendaftaranController extends Controller
                 }
             }
         }
+    }
+
+
+
+    public function export_excel()
+    {
+        // $data = Pendaftaran::orderby('id', 'desc')->get();
+        return Excel::download(new PendaftaranExport, date('Y-m-d') . '-' . 'pendaftaran.xlsx');
+    }
+
+    // halaman orangtua dashboard
+
+    public function detail_kelas(String $id_siswa, String $id_kelas)
+    {
+        $data_kelas = Manajemen_Kelas::where('siswa_id', $id_siswa)->where('kelas_id', $id_kelas)->first();
+        $data_siswa = Siswa::where('id', $id_siswa)->first();
+        $absensi = Absensi_Detail::where('siswa_id', $id_siswa)->where('manajemen_kelas_id', $data_kelas->id)->get();
+
+
+        // data jadwal where id_kelas = $id_kelas
+
+        $data_jadwal = Jadwal::where('kelas_id', $id_kelas)->get();
+
+        $raport = Raport::where('siswa_id', $id_siswa)->where('kelas_id', $id_kelas)->where('program_id', $data_kelas->program_id)->first();
+
+        return view('dashboard-orangtua.pendaftaran.detail_kelas', compact('data_siswa', 'data_kelas', 'absensi', 'data_jadwal', 'raport',));
+    }
+
+    public function cetak_raport(String $id)
+    {
+        $raport = Raport::find($id);
+        $detail_raport = Detail_Raport::where('raport_id', $id)->get();
+        $kelas = Kelas::find($raport->kelas_id);
+        $siswa = Siswa::find($raport->siswa_id);
+
+        $detail_raport_index1 = $detail_raport[0]->aspek->id;
+        $detail_raport_index2 = $detail_raport[count($detail_raport) - 1]->aspek->id;
+        // dd($detail_raport_index1, $detail_raport_index2);
+        $data_detail_raport_index1 = Detail_Raport::where('aspek_id', $detail_raport_index1)->where('raport_id', $id)->get();
+        $data_detail_raport_index2 = Detail_Raport::where('aspek_id', $detail_raport_index2)->where('raport_id', $id)->get();
+
+        return view('dashboard-orangtua.pendaftaran.cetak_raport', compact('raport', 'siswa', 'kelas', 'detail_raport', 'data_detail_raport_index1', 'data_detail_raport_index2'));
     }
 }

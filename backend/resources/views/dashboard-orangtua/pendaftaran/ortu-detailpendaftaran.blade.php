@@ -1,6 +1,9 @@
 @extends('dashboard-orangtua/index')
 {{-- @section('active_pendaftaran', 'active') --}}
-{{-- @section('show_manajemensiswa', 'show') --}}
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('pendaftaran.index.ortu') }}">Pendaftaran</a></li>
+    <li class="breadcrumb-item active">Detail Pendaftaran</li>
+@endsection
 @section('content')
     <style>
         #table-program,
@@ -33,16 +36,22 @@
 
     <div class="dashboard-content px-3 pt-5">
         <div class="container">
-            <div class="row mb-2">
-                <div class="container">
-                    <div class="col-md-8 ">
-                        <h4 class="fw-bold">Detail Pendaftaran</h4>
-                    </div>
+            <div class="row mb-2 d-flex justify-content-between">
+
+                <div class="col-md-6 " data-aos="fade-right" data-aos-duration="1000">
+                    <h4 class="fw-bold">Detail Pendaftaran</h4>
                 </div>
+                <div class="col-md-6 text-end mb-4 text-end" data-aos="fade-left" data-aos-duration="1000">
+                    <span data-bs-toggle="modal" data-bs-target="#myModal-all-program"
+                        class="btn btn-primary hover-btn btn-sm mt-2 " style="width: 100px">Daftar
+                        Baru</span>
+                </div>
+
+
             </div>
             <div class="row">
                 {{-- buat tingginya sesuai ukuran data --}}
-                <div class="col-md-4 mb-4">
+                <div class="col-md-4 mb-4" data-aos="fade-right" data-aos-duration="1500">
                     <div class="box-card-custom bg-white p-3" style="border-radius: 10px">
                         <div class="row">
                             <div class="col-md-12">
@@ -88,15 +97,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-8 mb-4">
-                    <div class="row">
+                <div class="col-md-8 mb-4" data-aos="fade-left" data-aos-duration="1500">
 
-                        <div class="col-md-12 text-end mb-4">
-                            <span data-bs-toggle="modal" data-bs-target="#myModal-all-program"
-                                class="btn btn-primary hover-btn btn-sm mt-2 " style="width: 100px">Daftar
-                                Baru</span>
-                        </div>
-                    </div>
 
                     <div class="box-card-custom bg-white p-2" style="border-radius: 10px">
 
@@ -157,17 +159,8 @@
                                                                         style="color: black;" title="Detail">
                                                                         <i class="fa-solid fa-eye text-dark"></i>
                                                                         Detail Program
-                                                                        <!-- Ubah teks "Delete" menjadi "Detail" di sini -->
+
                                                                     </small>
-
-
-                                                                    {{-- <form action="{{ route('pendaftaran.destroy', $item->id) }}" method="POST" style="display: inline-block;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item">
-                                                                        <i class="fa-solid fa-trash"></i> Hapus
-                                                                    </button>
-                                                                </form> --}}
                                                                 </div>
                                                             </li>
 
@@ -182,110 +175,89 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="row mb-4">
-                        <div class="container mt-4">
-                            <div class="box-card-custom flex-fill  bg-white ">
-                                <div class="col-md-12">
-                                    <div class="card-body  align-items-center justify-content-center">
-                                        <span> </span>
+
+                </div>
+            </div>
+
+            {{-- section Daftar Kelas --}}
+            <section>
+                <div class="row mb-2">
+                    <div class="container">
+                        <div class="col-md-8 ">
+                            <h5 class="fw-bold">Daftar Kelas</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    @foreach ($data_kelas as $ap)
+                        <div class="col-md-4 " data-aos="fade-down" data-aos-duration="1800">
+                            <span class="card card-post border-3 rounded-3 mb-3">
+                                <img src="{{ asset('storage/images/' . $ap->program->gambar) }}" alt=""
+                                    class="card-img-top" width="100%" height="250">
+                                <div class="card-body">
+                                    <span class="bg-light rounded p-2 text-primary category me-auto">
+                                        {{ $ap->program->kategori_program }} |
+                                        {{ $ap->program->jeniskelas->nama_jenis_kelas }}</span>
+
+                                    <h5 class=" text-primary text-capitalize mt-3 fw-bold">
+                                        {{ $ap->kelas->nama_kelas }} - {{ $ap->program->nama_program }}
+                                    </h5>
+                                    <div class="profile-pengajar mt-3">
+                                        <div class="row d-flex justify-content-between">
+
+                                            <div class="col-md-6 d-flex align-items-center">
+
+                                                <p class="text-primary  ">
+                                                    {{ $ap->kelas->pengajar->nama }}
+
+                                                    <br>
+                                                    <span class="text-secondary" style="font-size: 11px">
+                                                        Pengajar
+                                                    </span>
+
+
+                                                </p>
+                                                <br>
+                                            </div>
+                                            <div class="col-md-6 d-flex justify-content-end">
+                                                <span id="harga_detail" class="text-primary">
+                                                    @if ($ap->program->harga == 0)
+                                                        <span class="text-primary  text-end">Gratis</span>
+                                                    @else
+                                                        <span class="text-primary text-end ">Rp.
+                                                            {{ number_format($ap->program->harga, 0, ',', '.') }}
+                                                            /
+                                                            {{ $ap->program->durasi }}</span>
+                                                    @endif
+                                                </span>
+                                            </div>
+
+
+
+
+                                        </div>
                                     </div>
 
+                                    <div class=" mt-3" title="Detail Kelas">
+                                        <a class="btn btn-primary form-control"
+                                            href="{{ route('pendaftaran.detail.kelas.ortu', [$ap->siswa_id, $ap->kelas_id]) }}"
+                                            class="text-white">
+
+                                            Detail Kelas
+                                        </a>
+                                    </div>
+                                    {{-- <a href="#" class="btn btn-primary form-control"> Detail Program </a> --}}
+
                                 </div>
-                            </div>
+                            </span>
                         </div>
-                    </div> --}}
+                    @endforeach
 
                 </div>
+            </section>
 
 
-
-            </div>
-            <div class="row mb-2">
-                <div class="container">
-                    <div class="col-md-8 ">
-                        <h5 class="fw-bold">Program Jadwal</h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-12">
-                    <div class="box-content bg-white p-4">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-4 mt-2" id="example">
-                                <thead>
-                                    <tr style="bg-color: black" class="mt-2">
-                                        <th class="text-xs ">Kelas</th>
-                                        <th class="text-xs ">Jadwal</th>
-                                        <th class="text-xs ">Nama Siswa</th>
-                                        <th class="text-xs ">Kode Siswa</th>
-                                        <th class="text-xs ">Tgl. Absen</th>
-                                        <th class="text-xs ">Kehadiran</th>
-                                        {{-- <th class="text-xs ">Action</th> --}}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($absensi as $item)
-                                        <tr>
-                                            <td class="">
-                                                <div class="user-info fw-bold">
-                                                    <p>{{ $item->absensi->kelas->nama_kelas }}
-                                                        -{{ $item->absensi->kelas->program->nama_program }} </p>
-                                                </div>
-                                            </td>
-                                            <td class="">
-                                                <div class="user-info fw-bold">
-                                                    <p>{{ $item->absensi->jadwal->hari }}
-                                                    </p>
-                                                </div>
-                                            </td>
-
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <p class="user-name">{{ $item->siswa->nama_siswa }}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class=" ">
-                                                <div class="user-info">
-                                                    <p>{{ $item->siswa->kode_siswa }}</p>
-
-                                                </div>
-                                            </td>
-                                            <td class="text-xs  ">
-
-                                                {{ $item->tgl_absen }}
-                                            </td>
-                                            @if ($item->kehadiran == 'Hadir')
-                                                <td class="text-xs text-success opacity-7  fw-bold">
-                                                    Hadir
-                                                </td>
-                                            @elseif ($item->kehadiran == 'Ijin')
-                                                <td class="text-xs   fw-bold">
-                                                    Ijin
-                                                </td>
-                                            @elseif ($item->kehadiran == 'Sakit')
-                                                <td class="text-xs text-warning opacity-7  fw-bold">
-                                                    Sakit
-                                                </td>
-                                            @else
-                                                <td class="text-xs text-danger opacity-7  fw-bold">
-                                                    Alpa
-                                                </td>
-                                            @endif
-
-
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Modal Bukti Pembayaran -->

@@ -29,9 +29,20 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <title>Admin Sidebar</title>
 
 </head>
+<style>
+    #example {
+        font-size: 14px;
+    }
+
+    #table {
+        font-size: 11px;
+    }
+</style>
 
 <body>
 
@@ -47,13 +58,18 @@
 
             <span class="menu-icon d-none d-block mt-5">
             </span>
-            <ul class="list-unstyled px-3">
+            <ul class="list-unstyled px-3  animate__animated animate__fadeInLeft">
 
                 <span class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"
                         style="color: #f9f9f9;">Menu</a></span>
 
                 @if (Auth::user()->role == 'admin')
                     <li class="@yield('active_dashboard')"><a href="{{ route('dashboard') }}"
+                            class="text-decoration-none px-3 py-2 d-block "><i
+                                class="fa-solid fa-house"></i>Dashboard</a>
+                    </li>
+                @elseif (Auth::user()->role == 'pengajar')
+                    <li class="@yield('active_dashboard')"><a href="{{ route('dashboard-pengajar') }}"
                             class="text-decoration-none px-3 py-2 d-block "><i
                                 class="fa-solid fa-house"></i>Dashboard</a>
                     </li>
@@ -153,20 +169,54 @@
                         </div>
                     </span>
                 @endif
-                <li class="@yield('active_absensi')"><a href="{{ route('absensi.index') }}"
-                        class="text-decoration-none px-3 py-1 d-block "><i
-                            class="fa-regular fa-calendar-check fs-5"></i>Kehadiran</a>
-                </li>
+                @if (Auth::user()->role == 'admin')
+                    <li class="@yield('active_absensi')"><a href="{{ route('absensi.index') }}"
+                            class="text-decoration-none px-3 py-2 d-block "><i
+                                class="fa-regular fa-calendar-check fs-5"></i>Kehadiran</a>
+                    </li>
+                @else
+                    <li class="@yield('active_jadwalkelas')"><a href="{{ route('jadwalpetugas.index') }}"
+                            class="text-decoration-none px-3 py-2 d-block">
+                            <i class="fa-regular fa-clock fs-7"></i>
+                            Jadwal Kelas</a>
+                    </li>
+                    <li class="@yield('active_absensi')"><a href="{{ route('absensi.index.pengajar') }}"
+                            class="text-decoration-none px-3 py-2 d-block "><i
+                                class="fa-regular fa-calendar-check fs-5"></i>Kehadiran</a>
+                    </li>
+                @endif
+
+                <span class="mb-1">
+                    <a href="#" class="d-flex align-items-center px-3 py-2 text-decoration-none"
+                        style="color: #284a5e;" data-bs-toggle="collapse" data-bs-target="#man-penilaian"
+                        aria-expanded="true">
+                        <i class="fa-solid fa-marker" style="padding-right: 16px"></i>
+
+                        Manajemen Nilai
+                        <i class="fa-solid fa-angle-down ms-auto"></i>
+                    </a>
+
+                    <div class="collapse @yield('show_manajemennilai') " id="man-penilaian">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small px-5">
+                            @if (Auth::user()->role == 'admin')
+                                <li class="@yield('active_aspekpenilaian')"><a href="{{ route('aspekpenilaian.index') }}"
+                                        class="text-decoration-none px-3 py-2 d-block">Aspek Penilain</a></li>
+                                <li class="@yield('active_raport')"><a href="{{ route('raport_kelas.index') }}"
+                                        class="text-decoration-none px-3 py-2 d-block">Raport Siswa</a>
+                                </li>
+                            @else
+                                <li class="@yield('active_raport')"><a href="{{ route('raport_kelas.index.pengajar') }}"
+                                        class="text-decoration-none px-3 py-2 d-block">Raport Siswa</a>
+                            @endif
+
+
+                            </li>
+                        </ul>
+                    </div>
+                </span>
 
             </ul>
             <hr class="h-color mx-2">
-
-            {{-- <ul class="list-unstyled px-2">
-                <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i
-                            class="fal fa-bars"></i> Settings</a></li>
-                <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i
-                            class="fal fa-bell"></i> Notifications</a></li>
-            </ul> --}}
         </div>
 
         <div class="content">
@@ -220,39 +270,7 @@
                             @endif
                         </ul>
                     </div>
-                    {{-- <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                        <ul class="navbar-nav mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" style="color: #284a5e" aria-current="page" href="#"><i
-                                        class="fas fa-search"></i> Search</a>
-                            </li>
 
-                            @if (Auth::check())
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link text-decoration-none text-dark">
-                                        <img src="{{ asset('storage/images/' . Auth::user()->foto) }}"
-                                            class="img-thumbnail rounded-circle" width="30" height="30"
-                                            alt="{{ Auth::user()->nama }}">
-                                        {{ Auth::user()->nama }}
-
-                                    </a>
-                                </li>
-
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn custom-btn-hapus btn-sm hover-btn text-white"
-                                        title="Logout"><i class="fa-solid fa-arrow-right-from-bracket text-white"></i>
-                                    </button>
-                                </form>
-                            @else
-                                <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
-                                <li class="nav-item"><a href="{{ route('register') }}"
-                                        class="btn btn-primary rounded-pill fw-medium px-4 py-2">Register</a></li>
-                            @endif
-
-
-                        </ul>
-                    </div> --}}
                 </div>
 
             </nav>
@@ -304,6 +322,9 @@
 </body>
 
 </html>
-
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
 {{-- js --}}
 @stack('js')

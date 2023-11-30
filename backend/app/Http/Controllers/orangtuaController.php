@@ -43,10 +43,10 @@ class orangtuaController extends Controller
             return $validasi->errors();
         }
 
-        if($request->hasFile('foto')){
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $extension = $file->getClientOriginalName();
-            $filename = time().'-'.$extension;
+            $filename = time() . '-' . $extension;
             $file = $file->storeAs('public/images', $filename);
         }
 
@@ -61,9 +61,11 @@ class orangtuaController extends Controller
             'active' => 1
         ]);
 
-        if($data){
+        $data->assignRole('orangtua');
+
+        if ($data) {
             return redirect('/orangtua')->with('success', 'Data Berhasil Ditambahkan');
-        }else{
+        } else {
             return redirect('/orangtua')->with('error', 'Data Gagal');
         }
     }
@@ -97,7 +99,7 @@ class orangtuaController extends Controller
             'no_hp' => 'required',
         ]);
 
-        if($validasi->fails()){
+        if ($validasi->fails()) {
             return $validasi->errors();
         }
 
@@ -107,24 +109,26 @@ class orangtuaController extends Controller
         $data->alamat = $request->get('alamat');
         $data->no_hp = $request->get('no_hp');
 
-        if($request->hasFile('foto')){
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $extension = $file->getClientOriginalName();
-            $filename = time().'.'.$extension;
+            $filename = time() . '.' . $extension;
             $file = $file->storeAs('public/images', $filename);
             $data->foto = $filename;
         }
 
-        // jika request mengisi form password
-        if($request->has('password')){
+        if ($request->filled('password')) {
+            // Menggunakan bcrypt untuk menghash password sebelum disimpan
             $data->password = bcrypt($request->get('password'));
         }
 
+        $data->assignRole('orangtua');
+
         $data->save();
 
-        if($data){
+        if ($data) {
             return redirect('/orangtua')->with('success', 'Data Berhasil Diubah');
-        }else{
+        } else {
             return redirect('/orangtua')->with('error', 'Data Gagal Diubah');
         }
     }
@@ -137,22 +141,22 @@ class orangtuaController extends Controller
         //
     }
 
-    public function wa($nohp){
+    public function wa($nohp)
+    {
         $nohp = $nohp;
-        $msg = "Hello saya" .Auth::user()->nama .' - '.Auth::user()->email . "ingin bertanya";
+        $msg = "Hello saya" . Auth::user()->nama . ' - ' . Auth::user()->email . "ingin bertanya";
 
-        return redirect()->away('https://api.whatsapp.com/send?phone='.$nohp .'&text='.$msg);
-
+        return redirect()->away('https://api.whatsapp.com/send?phone=' . $nohp . '&text=' . $msg);
     }
 
-    public function setnonActive($id){
+    public function setnonActive($id)
+    {
         $data = User::find($id);
 
-        if($data->active == 1){
+        if ($data->active == 1) {
             $data->active = 0;
             $status = "Status Akun Orangtua Di Non Active";
-        }
-        else{
+        } else {
             $data->active = 1;
             $status = "Status Akun Orangtua Di Active";
         }
@@ -163,5 +167,4 @@ class orangtuaController extends Controller
 
         return redirect('/orangtua')->with('success', $status);
     }
-
 }

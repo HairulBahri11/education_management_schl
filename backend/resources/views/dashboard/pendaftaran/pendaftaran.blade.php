@@ -26,11 +26,14 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Pendaftaran</h4>
 
                     </div>
-                    <div class="col-md-5 float-end">
+                    <div class="col-md-5 d-flex justify-content-end ms-auto" data-aos="fade-left" data-aos-duration="1000">
+                        <a href="{{ route('pendaftaran.export_excel') }}"
+                            class="btn btn-sm custom-btn-edit text-white hover-btn me-2" target="_blank"><i
+                                class="fa-solid fa-print text-white"></i>Excel</a>
                         <div class="float-end">
                             <a href="{{ route('pendaftaran.create') }}"
                                 class="btn btn-sm custom-btn-primary text-white hover-btn"><i
@@ -41,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
 
                 <div class="row">
                     <div class="box-content">
@@ -257,40 +260,41 @@
 
 
         @endsection
+    </div>
+</div>
+<script>
+    function lihat(id, nama_program, jenis_kelas, bukti_pembayaran, status_pembayaran, harga) {
+        // buka modal
+        $('#myModal-show').modal('show');
+        // image url
+        let imageUrl = "{{ asset('storage/images') }}" + "/" + bukti_pembayaran;
+        $('#gambarLihat').attr('src', imageUrl);
+        // nama program
+        $('#ProgramLihat').text(nama_program);
+        // kategori kelas
+        $('#kategoriKelas').text(jenis_kelas);
+        // deskripsi
+        $('#deskripsiLihat').text(status_pembayaran);
+        // harga with number_format
 
-        <script>
-            function lihat(id, nama_program, jenis_kelas, bukti_pembayaran, status_pembayaran, harga) {
-                // buka modal
-                $('#myModal-show').modal('show');
-                // image url
-                let imageUrl = "{{ asset('storage/images') }}" + "/" + bukti_pembayaran;
-                $('#gambarLihat').attr('src', imageUrl);
-                // nama program
-                $('#ProgramLihat').text(nama_program);
-                // kategori kelas
-                $('#kategoriKelas').text(jenis_kelas);
-                // deskripsi
-                $('#deskripsiLihat').text(status_pembayaran);
-                // harga with number_format
+        let hargaFormat = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        }).format(harga);
+        $('#hargaLihat').text(hargaFormat);
+        // $('#hargaLihat').text(harga);
 
-                let hargaFormat = new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR'
-                }).format(harga);
-                $('#hargaLihat').text(hargaFormat);
-                // $('#hargaLihat').text(harga);
+        if (status_pembayaran == "Sudah-Bayar") {
+            $('#btnKonfirmasi').css('display', 'none');
+        } else {
+            $('#btnKonfirmasi').css('display', 'block');
 
-                if (status_pembayaran == "Sudah-Bayar") {
-                    $('#btnKonfirmasi').css('display', 'none');
-                } else {
-                    $('#btnKonfirmasi').css('display', 'block');
+            // konfirmasi form kirim attribute src
+            let konfirmasiUrl = "{{ route('pendaftaran.konfirmasi', ['id' => ':id']) }}";
+            konfirmasiUrl = konfirmasiUrl.replace(':id', id);
+            $('#konfirmasi_form').attr('action', konfirmasiUrl);
 
-                    // konfirmasi form kirim attribute src
-                    let konfirmasiUrl = "{{ route('pendaftaran.konfirmasi', ['id' => ':id']) }}";
-                    konfirmasiUrl = konfirmasiUrl.replace(':id', id);
-                    $('#konfirmasi_form').attr('action', konfirmasiUrl);
+        }
 
-                }
-
-            }
-        </script>
+    }
+</script>

@@ -29,10 +29,10 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Data Kelas</h4>
                     </div>
-                    <div class="col-md-5 ms-auto">
+                    <div class="col-md-5 ms-auto" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
                             <a href="{{ route('kelas.create') }}"
                                 class="btn btn-sm custom-btn-primary text-white hover-btn"><i
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row">
                     <div class="box-content">
                         <div class="col">
@@ -53,6 +53,7 @@
                                                 <th class="text-xs text-secondary opacity-7">Kelas</th>
                                                 <th class="text-xs text-secondary opacity-7">Program
                                                 </th>
+                                                <th class="text-xs text-secondary opacity-7">Pengajar</th>
                                                 <th class="text-xs text-secondary opacity-7">Durasi</th>
                                                 <th class="text-xs text-secondary opacity-7">Jumlah Siswa</th>
                                                 <th class="text-xs text-secondary opacity-7">Status</th>
@@ -82,6 +83,10 @@
                                                             $icon = 'fa fa-times-circle text-danger';
                                                         }
                                                     @endphp
+                                                    <td class="text-xs text-secondary opacity-7 align-middle">
+                                                        {{ $item->pengajar->nama }}
+
+                                                    </td>
                                                     <td class="text-xs text-secondary opacity-7 align-middle">
                                                         <span>
                                                             <i class="fa-solid fa-calendar-days"> </i>

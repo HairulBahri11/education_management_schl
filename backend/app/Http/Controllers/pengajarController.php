@@ -42,13 +42,12 @@ class pengajarController extends Controller
             return $validasi->errors();
         }
 
-        if($request->hasFile('foto')){
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $extension = $file->getClientOriginalName();
-            $filename = time().'-'.$extension;
+            $filename = time() . '-' . $extension;
             $file = $file->storeAs('public/images', $filename);
-        }
-        else{
+        } else {
             $filename = '7309681.jpg';
         }
 
@@ -64,9 +63,11 @@ class pengajarController extends Controller
 
         ]);
 
-        if($data){
+        $data->assignRole('pengajar');
+
+        if ($data) {
             return redirect('/pengajar')->with('success', 'Data Berhasil Ditambahkan');
-        }else{
+        } else {
             return redirect('/pengajar')->with('error', 'Data Gagal Ditambahkan');
         }
     }
@@ -100,7 +101,7 @@ class pengajarController extends Controller
             'no_hp' => 'required',
         ]);
 
-        if($validasi->fails()){
+        if ($validasi->fails()) {
             return $validasi->errors();
         }
 
@@ -110,24 +111,34 @@ class pengajarController extends Controller
         $data->alamat = $request->get('alamat');
         $data->no_hp = $request->get('no_hp');
 
-        if($request->hasFile('foto')){
+        if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $extension = $file->getClientOriginalName();
-            $filename = time().'.'.$extension;
+            $filename = time() . '.' . $extension;
             $file = $file->storeAs('public/images', $filename);
             $data->foto = $filename;
         }
 
-        // jika request mengisi form password
-        if($request->has('password')){
+        // // jika request mengisi form input password
+        // if ($request->has('password')) {
+        //     $data->password = bcrypt($request->get('password'));
+        // } else {
+        //     dd($request->get('password'));
+        // }
+        // jika request mengisi form input password
+        if ($request->filled('password')) {
+            // Menggunakan bcrypt untuk menghash password sebelum disimpan
             $data->password = bcrypt($request->get('password'));
         }
 
+
+        $data->assignRole('pengajar');
+
         $data->save();
 
-        if($data){
+        if ($data) {
             return redirect('/pengajar')->with('success', 'Data Berhasil Diubah');
-        }else{
+        } else {
             return redirect('/pengajar')->with('error', 'Data Gagal Diubah');
         }
     }
@@ -140,20 +151,20 @@ class pengajarController extends Controller
         //
     }
 
-    public function wa($nohp){
+    public function wa($nohp)
+    {
         $nohp = $nohp;
-        return redirect()->away('https://api.whatsapp.com/send?phone='.$nohp);
-
+        return redirect()->away('https://api.whatsapp.com/send?phone=' . $nohp);
     }
 
-    public function setnonActive($id){
+    public function setnonActive($id)
+    {
         $data = User::find($id);
 
-        if($data->active == 1){
+        if ($data->active == 1) {
             $data->active = 0;
             $status = "Status Pengajar Di Non Active";
-        }
-        else{
+        } else {
             $data->active = 1;
             $status = "Status Pengajar Di Active";
         }

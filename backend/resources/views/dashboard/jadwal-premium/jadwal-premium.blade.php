@@ -29,23 +29,29 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Jadwal Kelas
-                            <span class="text-white"
-                                style="background-color: gold; padding: 5px; border-radius:8px; margin-left: 10px;font-size: 12px">
-                                <i>Premium</i></span>
+                            @if (Auth::user()->role == 'admin')
+                                <span class="text-white"
+                                    style="background-color: gold; padding: 5px; border-radius:8px; margin-left: 10px;font-size: 12px">
+                                    <i>Premium</i></span>
+                            @endif
+
                         </h4>
                     </div>
-                    <div class="col-md-5 ms-auto">
+                    <div class="col-md-5 ms-auto" data-aos="fade-left" data-aos-duration="1000">
                         <div class="float-end">
-                            <a href="{{ route('jadwalpremium.create') }}"
-                                class="btn btn-sm custom-btn-primary text-white hover-btn"><i
-                                    class="fa-solid fa-circle-plus text-white"></i>Tambah Jadwal</a>
+                            @if (Auth::user()->role == 'admin')
+                                <a href="{{ route('jadwalpremium.create') }}"
+                                    class="btn btn-sm custom-btn-primary text-white hover-btn"><i
+                                        class="fa-solid fa-circle-plus text-white"></i>Tambah Jadwal</a>
+                            @endif
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
                 <div class="row">
                     <div class="box-content">
                         <div class="col">
@@ -61,7 +67,10 @@
                                                 <th class="text-xs text-secondary opacity-7">Program
                                                 </th>
                                                 <th class="text-xs text-secondary opacity-7">Status</th>
-                                                <th class="text-xs text-secondary opacity-7">Action</th>
+                                                @if (Auth::user()->role == 'admin')
+                                                    <th class="text-xs text-secondary opacity-7">Action</th>
+                                                @endif
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -109,22 +118,26 @@
                                                         </span>
                                                     </td>
 
+                                                    @if (Auth::user()->role == 'admin')
+                                                        <td class="text-xs text-secondary opacity-7 align-middle">
 
-                                                    <td class="text-xs text-secondary opacity-7 align-middle">
+
+                                                            <form
+                                                                action="{{ route('jadwalpremium.setnonactive', $item->id) }}"
+                                                                method="POST" style="display: inline-block;">
+                                                                @method('POST')
+                                                                @csrf
+
+                                                                <button type="submit"
+                                                                    class="btn btn-sm custom-btn-hapus hover-btn"
+                                                                    title="Ubah Status" data-id="{{ $item->id }}"><i
+                                                                        class="fa-solid fa-trash text-white fs-10"
+                                                                        onclick="return confirm('apakah kamu yakin ingin mengubah status jadwalpremium?')"></i></button>
+                                                            </form>
 
 
-                                                        <form action="{{ route('jadwalpremium.setnonactive', $item->id) }}"
-                                                            method="POST" style="display: inline-block;">
-                                                            @method('POST')
-                                                            @csrf
-
-                                                            <button type="submit"
-                                                                class="btn btn-sm custom-btn-hapus hover-btn"
-                                                                title="Ubah Status" data-id="{{ $item->id }}"><i
-                                                                    class="fa-solid fa-trash text-white fs-10"
-                                                                    onclick="return confirm('apakah kamu yakin ingin mengubah status jadwalpremium?')"></i></button>
-                                                        </form>
-                                                    </td>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>

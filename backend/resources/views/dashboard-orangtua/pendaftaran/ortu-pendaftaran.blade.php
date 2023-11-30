@@ -1,4 +1,7 @@
 @extends('dashboard-orangtua/index')
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('pendaftaran.index.ortu') }}">Pendaftaran</a></li>
+@endsection
 {{-- @section('active_pendaftaran', 'active') --}}
 {{-- @section('show_manajemensiswa', 'show') --}}
 @section('content')

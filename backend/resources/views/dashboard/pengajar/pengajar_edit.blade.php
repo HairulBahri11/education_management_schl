@@ -5,11 +5,12 @@
         <div class="container">
             <div class="row mb-3">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h2 class="ms-4" style="font-weight: bold">Edit pengajar</h2>
                     </div>
-                    <div class="col-md-5 float-end">
-                        <form action="{{ route('pengajar.update', $data->id) }}" method="POST" enctype="multipart/form-data">
+                    <div class="col-md-5 float-end" data-aos="fade-left" data-aos-duration="1000">
+                        <form action="{{ route('pengajar.update', $data->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="float-end">
                                 <button type="submit" class="btn custom-btn-primary hover-btn text-white"> <i
@@ -19,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row mb-3" data-aos="fade-left" data-aos-duration="1500">
                 <div class="box-content">
                     <div class="col bg-white">
                         <div class="p-5">
@@ -29,7 +30,7 @@
                                         <label for="exampleFormControlInput1" class="form-label">Nama pengajar</label>
                                         <input type="text" name="nama" class="form-control"
                                             id="exampleFormControlInput1" placeholder="Ex. Joghardi" required
-                                            value="{{ $data->nama}}">
+                                            value="{{ $data->nama }}">
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Email</label>
@@ -43,7 +44,8 @@
                                             <label for="exampleFormControlInput1" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control"
                                                 id="exampleFormControlInput1" placeholder="Password awal">
-                                                <span style="font-size: 12px; color: red"> isi jika ingin mengubah password</span>
+                                            <span style="font-size: 12px; color: red"> isi jika ingin mengubah
+                                                password</span>
 
                                         </div>
                                         {{-- <div class="mb-3">
@@ -68,7 +70,7 @@
                                         <label for="exampleFormControlTextarea1" class="form-label">Foto</label>
                                         <input type="file" name="foto" class="form-control"
                                             id="exampleFormControlTextarea1" rows="3">
-                                            <p style="font-size: 12px; color: red"> isi jika ingin mengubah foto</p>
+                                        <p style="font-size: 12px; color: red"> isi jika ingin mengubah foto</p>
                                         <img src="{{ asset('storage/images/' . $data->foto) }}" class="mt-2"
                                             width="100" alt="">
                                         <span>{{ $data->foto }}</span>
@@ -91,17 +93,16 @@
         @endsection
 
         <script>
-// ini buat dari sisi petugas atau orang tua aja
+            // ini buat dari sisi petugas atau orang tua aja
             function editPassword() {
                 $(document).ready(function() {
-                $('.password-edit').keyup(function() {
-                    if ($('.password-database').val() == $('.passwordbaru').val()) {
-                        $('.passwordbaru').attr('required', true);
-                    } else {
-                        $('.passwordbaru').attr('required', false);
-                    }
-                });
-            })
+                    $('.password-edit').keyup(function() {
+                        if ($('.password-database').val() == $('.passwordbaru').val()) {
+                            $('.passwordbaru').attr('required', true);
+                        } else {
+                            $('.passwordbaru').attr('required', false);
+                        }
+                    });
+                })
             }
-
         </script>

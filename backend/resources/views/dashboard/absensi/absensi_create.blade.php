@@ -28,22 +28,33 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="container">
-                    <div class="col-md-5">
+                    <div class="col-md-5" data-aos="fade-right" data-aos-duration="1000">
                         <h4 style="font-weight: bold">Tambah Absensi
 
                         </h4>
                     </div>
-                    <div class="col-md-5 ms-auto">
-                        <form action="{{ route('absensi.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="float-end">
-                                <button type="submit" class="btn custom-btn-primary hover-btn text-white"> <i
-                                        class="fa-solid fa-floppy-disk text-white"></i> Simpan</button>
-                            </div>
+                    <div class="col-md-5 ms-auto" data-aos="fade-left" data-aos-duration="1000">
+                        @if (Auth::user()->role == 'admin')
+                            <form action="{{ route('absensi.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="float-end">
+                                    <button type="submit" class="btn custom-btn-primary hover-btn text-white"> <i
+                                            class="fa-solid fa-floppy-disk text-white"></i> Simpan</button>
+                                </div>
+                            @else
+                                <form action="{{ route('absensi.store.pengajar') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="float-end">
+                                        <button type="submit" class="btn custom-btn-primary hover-btn text-white"> <i
+                                                class="fa-solid fa-floppy-disk text-white"></i> Simpan</button>
+                                    </div>
+                        @endif
+
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container" data-aos="fade-left" data-aos-duration="1500">
 
                 <div class="row mb-3">
                     <div class="box-content">
